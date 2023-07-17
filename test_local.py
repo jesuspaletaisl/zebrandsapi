@@ -173,16 +173,16 @@ class TestApi:
         token = await self.test_token({"client_id": user["id"], "client_secret": "pass"})
 
         print("Token", json.dumps(token, indent=4))
-        headers = self.get_headers(token)
+        headers_a = self.get_headers(token)
 
-        res = await self.ss.get(url, headers = headers)
+        res = await self.ss.get(url, headers = headers_a)
         product = res.json()
 
         print("Get product", json.dumps(product, indent=4))
 
         uri_logs = self.get_url(["users", user["id"], "transactions"])
 
-        res = await self.ss.get(uri_logs, headers = headers)
+        res = await self.ss.get(uri_logs, headers = headers_a)
         trxs = res.json()
 
         print("List transactions", json.dumps(trxs, indent=4))
