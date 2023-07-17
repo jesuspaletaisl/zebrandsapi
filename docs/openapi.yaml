@@ -4,13 +4,14 @@ info:
   description: Catalog system 
   version: 0.1
 servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
+  - url: https://zebrandsapi-develop.up.railway.app
+    description: Development server
 
 paths:
   /token:
     post:
       summary: Get authentication token
+      security: []
       requestBody:
         required: true
         content:
@@ -91,6 +92,26 @@ paths:
       responses:
         '200':
           description: OK
+  /users/{user_id}/transactions:
+    get:
+      summary: List of logs when products are queried by users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of an user.
+          schema:
+            type : string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
 
   /products:
     post:
@@ -160,11 +181,18 @@ paths:
           description: OK
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
   schemas:
     Auth:
       type: object
       properties:
         client_id:
+          type: string
+          format: uuid
+        client_secret:
           type: string
           format: uuid
     User:
@@ -179,6 +207,7 @@ components:
           format: email
         role: 
           type: string
+          enum: [admin, anonymous]
         secret_key:
           type: string
           writeOnly: true
@@ -198,6 +227,23 @@ components:
         brand:
           type: string
           example: NOOZ
+    Transaction:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+          readOnly: true
+        user_id: 
+          type: string
+          format: uuid
+          readOnly: true
+        product_id: 
+          type: string
+          format: uuid
+          readOnly: true
+        counter_views:
+          type: integer
     DefaultResponse:
       type: object
       properties:
@@ -209,4 +255,6 @@ components:
       properties:
         token: 
           type: string
+security:
+  - BearerAuth: []
       
