@@ -13,7 +13,8 @@ Dev environment: https://zebrandsapi-develop.up.railway.app/
 
 Documentation: https://zebrandsapi-develop.up.railway.app/docs
 
-#Architecture design
+# Architecture design
+
 The Catalog System can be improved adding the next features:
 - Connect with an alternative service to Mailjest that allows sending more than 200 emails per day
 - Automate the testing process using Github Actions
