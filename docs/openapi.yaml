@@ -1,0 +1,212 @@
+openapi: 3.0.0
+info:
+  title: Zebrands API
+  description: Catalog system 
+  version: 0.1
+servers:
+  - url: http://api.example.com/v1
+    description: Optional server description, e.g. Main (production) server
+
+paths:
+  /token:
+    post:
+      summary: Get authentication token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /users:
+    post:
+      summary: Create new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+
+  /users/{user_id}:
+    get:
+      summary: Get details of specific user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of an user.
+          schema:
+            type : string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      summary: Update user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of an user.
+          schema:
+            type : string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      summary: Delete user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of an user.
+          schema:
+            type : string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+
+  /products:
+    post:
+      summary: Create new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+  /product/{product_id}:
+    get:
+      summary: Get details of specific product
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: Identifier of a product.
+          schema:
+            type : string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    patch:
+      summary: Update product
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: Identifier of a product.
+          schema:
+            type : string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      summary: Delete product
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of a product.
+          schema:
+            type : string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    Auth:
+      type: object
+      properties:
+        client_id:
+          type: string
+          format: uuid
+    User:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+        role: 
+          type: string
+        secret_key:
+          type: string
+          writeOnly: true
+    Product:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+          readOnly: true
+        sku: 
+          type: string
+        name:
+          type: string
+        price:
+          type: integer
+        brand:
+          type: string
+          example: NOOZ
+    DefaultResponse:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+    TokenResponse:
+      type: object
+      properties:
+        token: 
+          type: string
+      
