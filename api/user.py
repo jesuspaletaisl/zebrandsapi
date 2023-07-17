@@ -12,6 +12,12 @@ class User:
 
         resp.status = falcon.HTTP_200
 
+    async def on_get_transactions(self, req, resp, user_id): #list_transactions
+        trxs = await self.__db.list_doc('transactions', {"user_id": user_id})
+        resp.media = {}
+
+        resp.status = falcon.HTTP_200
+
     async def on_post_users(self, req, resp): #create_user
         body = await req.media
 
@@ -26,8 +32,8 @@ class User:
 
         #Verify if user is admin
         token = req.headers.get("authorization", " ").split(" ")[-1]
-        is_admin = await self.__db.validate_token(token)
-        if not is_admin:
+        creds = await self.__db.validate_token(token)
+        if creds.get("role", "") != "admin":
             resp.media = {
                 "error": "User does not have admin privileges"
             }
@@ -63,8 +69,8 @@ class User:
 
         #Verify if user is admin
         token = req.headers.get("authorization", " ").split(" ")[-1]
-        is_admin = await self.__db.validate_token(token)
-        if not is_admin:
+        creds = await self.__db.validate_token(token)
+        if creds.get("role", "") != "admin":
             resp.media = {
                 "error": "User does not have admin privileges"
             }
@@ -85,8 +91,8 @@ class User:
     async def on_delete_user(self, req, resp, user_id): #delete_user
         #Verify if user is admin
         token = req.headers.get("authorization", " ").split(" ")[-1]
-        is_admin = await self.__db.validate_token(token)
-        if not is_admin:
+        creds = await self.__db.validate_token(token)
+        if creds.get("role", "") != "admin":
             resp.media = {
                 "error": "User does not have admin privileges"
             }

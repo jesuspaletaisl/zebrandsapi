@@ -14,13 +14,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MONGO_URI = os.getenv('MONGO_URI')
+MONGO_URI = os.getenv('M0NGO_URI')
 API_KEY = os.getenv('API_KEY')
 API_SECRET = os.getenv('API_SECRET')
+
 
 class DB:
     def __init__(self, env = ""):
         uri = MONGO_URI
+
         self.__client = AsyncIOMotorClient(uri)
         self.__db = self.__client['zebrandsdb']
 
@@ -103,15 +105,18 @@ class DB:
             return False
 
     async def validate_token(self, token):
-        user_id = self.decode_jwt(token)["id"]
+        user_id = self.decode_jwt(token)["client_id"]
 
 
-        res = await self.get_doc("users", {"id": user_id}, {"role": 1})
+        res = await self.get_doc("users", {"id": user_id}, {"role": 1, "id": 1})
 
-        return True if res["role"] == "admin" else False
+        return res
 
     def send_email(self, message):
-        result = self.mailjet.send.create(data=message)
+        try:
+            result = self.mailjet.send.create(data=message)
+        except Exception as ex:
+            print("Error email: ", ex)
 
         return result
 

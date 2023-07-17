@@ -4,13 +4,14 @@ info:
   description: Catalog system 
   version: 0.1
 servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
+  - url: https://zebrandsapi-develop.up.railway.app
+    description: Development server
 
 paths:
   /token:
     post:
       summary: Get authentication token
+      security: []
       requestBody:
         required: true
         content:
@@ -160,11 +161,18 @@ paths:
           description: OK
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
   schemas:
     Auth:
       type: object
       properties:
         client_id:
+          type: string
+          format: uuid
+        client_secret:
           type: string
           format: uuid
     User:
@@ -179,6 +187,7 @@ components:
           format: email
         role: 
           type: string
+          enum: [admin, anonymous]
         secret_key:
           type: string
           writeOnly: true
@@ -209,4 +218,6 @@ components:
       properties:
         token: 
           type: string
+security:
+  - BearerAuth: []
       

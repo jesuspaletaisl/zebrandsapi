@@ -1,7 +1,8 @@
 import msgspec, json
 
 class Session(msgspec.Struct):
-    id: str
+    client_id: str
+    client_secret: str
 
 class User(msgspec.Struct):
     role: str
@@ -17,6 +18,7 @@ class Product(msgspec.Struct):
 class Model:
     def __init__(self):
         self.models = {
+            "session": Session,
             "user": User,
             "product": Product
         }
