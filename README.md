@@ -13,6 +13,10 @@ Dev environment: https://zebrandsapi-develop.up.railway.app/
 
 Documentation: https://zebrandsapi-develop.up.railway.app/docs
 
+For testing purposes in the endpoint /token, the next user was created as admin:
+client_id: admin
+client_secret: pass
+
 # Architecture design
 
 The Catalog System can be improved adding the next features:
