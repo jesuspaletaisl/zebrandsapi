@@ -13,7 +13,7 @@ class TestApi:
         "client_id": "admin",
         "client_secret": "pass"
     }
-    #url = "https://zebrandsapi-develop.up.railway.app"
+    url = "https://zebrandsapi-develop.up.railway.app"
 
     def get_headers(self, headers):
         return {"Authorization": "Bearer {}".format(headers["token"])}
