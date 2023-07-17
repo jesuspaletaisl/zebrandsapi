@@ -92,6 +92,26 @@ paths:
       responses:
         '200':
           description: OK
+  /users/{user_id}/transactions:
+    get:
+      summary: List of logs when products are queried by users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Identifier of an user.
+          schema:
+            type : string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
 
   /products:
     post:
@@ -207,6 +227,23 @@ components:
         brand:
           type: string
           example: NOOZ
+    Transaction:
+      type: object
+      properties:
+        id: 
+          type: string
+          format: uuid
+          readOnly: true
+        user_id: 
+          type: string
+          format: uuid
+          readOnly: true
+        product_id: 
+          type: string
+          format: uuid
+          readOnly: true
+        counter_views:
+          type: integer
     DefaultResponse:
       type: object
       properties:

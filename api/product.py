@@ -41,19 +41,20 @@ class Product:
         #Update number of times product is queried by anonymous user
         token = req.headers.get("authorization", " ").split(" ")[-1]
         creds = await self.__db.validate_token(token)
+        
         if creds.get("role", "") != "admin":
             
             query = {"user_id": creds["id"], "product_id": product_id}
-            is_trx = self.__db.get_doc("transactions", query, {"id": 1})
+            is_trx = await self.__db.get_doc("transactions", query, {"id": 1})
 
             if not is_trx:
                 query["counter_view"] = 1
-                body["id"] = self.__db.create_id()
-                body["created_at"] = self.__db.create_date()
-                self.__db.insert_doc("transactions", query)
+                query["id"] = self.__db.create_id()
+                query["created_at"] = self.__db.create_date()
+                await self.__db.insert_doc("transactions", query)
             else:
                 cond = {"$inc": {"counter_views": 1}}
-                self.__db.update_doc("transactions", query, cond = cond)
+                await self.__db.update_doc("transactions", query, cond = cond)
 
         resp.media = product
         resp.status = falcon.HTTP_200

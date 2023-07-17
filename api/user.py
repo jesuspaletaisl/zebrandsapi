@@ -13,8 +13,8 @@ class User:
         resp.status = falcon.HTTP_200
 
     async def on_get_transactions(self, req, resp, user_id): #list_transactions
-        trxs = await self.__db.list_doc('transactions', {"user_id": user_id})
-        resp.media = {}
+        trxs = await self.__db.list_docs('transactions', {"user_id": user_id})
+        resp.media = {"transactions": [trx async for trx in trxs]}
 
         resp.status = falcon.HTTP_200
 

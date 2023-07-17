@@ -36,6 +36,7 @@ def create_app(config=None):
 
     app.add_route('/users', user, suffix='users')
     app.add_route('/users/{user_id}', user, suffix='user')
+    app.add_route('/users/{user_id}/transactions', user, suffix='transactions')
 
     app.add_route('/products', product, suffix='products')
     app.add_route('/products/{product_id}', product, suffix='product')

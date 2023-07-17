@@ -80,7 +80,7 @@ class TestApi:
         res = await self.ss.post(url, json = body, headers = headers)
         user = res.json()
 
-        print("New user admin", json.dumps(user, indent=4))
+        print("New user anon", json.dumps(user, indent=4))
 
         user["secret_key"] = "pass"
 
@@ -165,15 +165,31 @@ class TestApi:
 
         print("Product changed", res)
 
+
+        #New user Anon
+        user = await self.test_user_anon()
+
+        #Get auth token
+        token = await self.test_token({"client_id": user["id"], "client_secret": "pass"})
+
+        print("Token", json.dumps(token, indent=4))
+        headers = self.get_headers(token)
+
         res = await self.ss.get(url, headers = headers)
         product = res.json()
 
         print("Get product", json.dumps(product, indent=4))
 
+        uri_logs = self.get_url(["users", user["id"], "transactions"])
 
-        #Delete User
+        res = await self.ss.get(uri_logs, headers = headers)
+        trxs = res.json()
+
+        print("List transactions", json.dumps(trxs, indent=4))
+
+        #Delete Product
         res = await self.ss.delete(url, headers = headers)
-        print("User deleted", res)
+        print("Product deleted", res)
 
 
     def test(self, case_test):
