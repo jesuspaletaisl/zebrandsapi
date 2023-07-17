@@ -1,7 +1,5 @@
-# zebrandsapi
-Catalog System
 
-# zebrandsapi
+# Zebrands API
 Catalog System created using Python Falcon Framework, MongoDB and Mailjest service.
 
 Run locally with the next commands:
